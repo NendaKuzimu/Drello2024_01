@@ -1,0 +1,1 @@
+alert("llamada a appInit.js"); 
