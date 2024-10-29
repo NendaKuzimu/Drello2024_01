@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title> Drello </title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta http-equiv="cache-control" content="max-age=0" />
+		<meta http-equiv="cache-control" content="no-cache" />
+		<meta http-equiv="expires" content="0" />
+		<meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
+		<meta http-equiv="pragma" content="no-cache" />
+		<link rel="stylesheet" href="css/main.css" >
+		<link rel="stylesheet" href="css/icons.css">
+		<script src="js/DragDrop.js" ></script>
+		<script src="js/Drello.js" ></script>
+		<script src="js/Board.js" ></script>
+		<script src="js/List.js" ></script>
+		<script src="js/Card.js" ></script>
+		<script src="js/BoardController.js" ></script>
+		<script src="js/ListController.js" ></script>
+		<script src="js/CardController.js" ></script>
+		<link rel="shortcut icon" href="favicon.ico"/>
+	</head>
+	<body>
+		<!-- Header -->
+		<header id="header-boards" class="no-overflow">
+			<div id="boards" class="header-item">
+				Boards
+			</div>
+			<div id="search" class="header-item">
+				<input class="width-80" type="search" name="search-string" id="header_search_box" />
+				<span id="search-open" class="icon-link-ext right no-display"></span>
+				<span id="search-close" class="icon-cancel right no-display"></span>
+			</div>
+			<a href="main.html">
+				<div id="logo" class="logo logo-small absolute-center"></div>
+			</a>
+			<div id="notifications" class="header-item" >
+
+			</div>
+			<div id="profile" class="header-item">
+				<figure class="avatar small">
+					<img src="images/shidil.png" />
+				</figure>
+				<span>Shidil Eringa</span>
+			</div>
+			<div id="add" class="header-item"></div>
+		</header>
+
+		<!-- Boards view container -->
+		<div id="boards_view_container" class="wrapper white no-overflow no-display-">
+
+			<!-- Section containing a number of board items -->
+			<section id="boards_starred" class="boards-list-container">
+				<h1 class="icon-star">Starred Boards</h1>
+
+				<!-- styling container for a number of boards -->
+				<div class="boards-list" id="boards_starred_list">	
+					<!-- This list is populated using JavaScript -->
+				</div>
+			</section>
+			<div class="break-4 clear"></div>
+
+			<!-- Section containing a number of board items -->
+			<section id="boards_my" class="boards-list-container">
+				<h1 class="icon-user">My Boards</h1>
+
+				<!-- styling container for a number of boards -->
+				<div class="boards-list" id="boards_my_list">
+					<!-- This list is populated using JavaScript -->
+
+					<a href="#" class="board left block round board-add" onClick="showCreateBoardPopup(event)">
+						<span class=""><br>Create new board...</span><span class="icon-star no-display"></span>
+					</a>
+					
+				</div>
+			</section>
+		</div>
+		<!-- End of the boards view container -->
+		
+		<!-- list view container -->
+		<div id="list_view_container" class="wrapper no-overflow no-display">
+			<div id="board_ribbon" class="block no-overflow white-text">
+				<h1 id="board_ribbon_title" class="title i-block"></h1>
+				<span id="board_ribbon_star" class="icon-star round pointer"></span>
+				<span id="privacy" class="icon-lock small pointer">Public</span>
+				<span id="menu_toggle" class="icon-left-open right small pointer"  onClick="return SidebarToggle()"> 
+					Show menu 
+				</span>
+			</div>
+
+			<!-- container fo lists - scrolls horizontally -->
+			<ul id="board_content" class="wrapper">
+				<!-- This list is populated using JavaScript -->
+				<!--<div class="list round ">
+
+				</div>-->
+				<li class="add-list round i-block">
+					<div id="add_list_link" class="add-list-placeholder round noselect">Add a list...</div>
+					<form method="POST" action="main.html" class="add-list-form round no-display" id="add_list_form">
+						<input type="text" id="add_list_form_input" class="block-input width-100 round block" name="list-name" 
+						 autofocus="true" autocomplete="off" maxlength="25" required/>
+						<span type="hidden" class="block break-1" ></span>
+						<input type="submit" class="btn btn-normal btn-green" value="Save" />
+						<span class="icon-cancel middle pointer" id="add_list_form_close"></span>
+					</form>
+				</li>
+				<!-- end of a single list -->
+			</ul>
+			<!-- end of container for lists. -->
+
+			<!-- Sidebar -->
+			<aside id="board_menu" class="sidemenu wrapper round block">
+				<div id="toggle_sidebar" class="icon-right-open pointer avatar" onClick="return SidebarToggle()"></div>
+
+				<div class="wrapper y-scroll height-100">
+					<div class="sidemenu-actions wrapper">
+						<div id="board_menu_nav_toggle" class="border-bottom pointer" onClick="return SidebarMenuToggle();">
+							<span class="title bold medium">
+								Menu
+							</span>
+							<span class="right icon-download"></span>
+						</div>
+						<ul class="sidemenu-actions-list show no-overflow">
+							<li class="sidemenu-actions-list-item normal pointer"><span class="icon-tags"></span>Labels</li>
+							<li class="sidemenu-actions-list-item normal pointer"><span class="icon-filter"></span>Filter Cards</li>
+							<li class="sidemenu-actions-list-item normal pointer border-bottom"><span class="icon-archive"></span>Archived Items</li>
+							<li class="sidemenu-actions-list-item small pointer"> Change Background </li>
+							<li class="sidemenu-actions-list-item small pointer"> Email-to-board settings </li>
+							<li class="sidemenu-actions-list-item small pointer"> Subscribe </li>
+							<li class="sidemenu-actions-list-item small pointer"> Copy Board... </li>
+							<li class="sidemenu-actions-list-item small pointer border-bottom"> Share, Print, and Export </li>
+							<li class="sidemenu-actions-list-item small pointer"> Additional Settings </li>
+							<li class="sidemenu-actions-list-item js-action-closeboard small pointer"> Close Board </li>
+						</ul>			
+					</div>
+					<div id="board_members">
+						<h1> Members </h1>
+						<ul class="board-members-list block">
+							<li class="block left avatar round"><img src="members/shidil.png" /></li>
+						</ul>
+					</div>
+
+					<div id="board-activity">
+					</div>
+				</div>
+			</aside>
+			<!-- End of sidebar -->
+		</div>
+		<!-- End of list view container -->
+
+		<!-- Popup containers goes here -->
+		<!-- Dialog box for creating a board -->
+		<aside id="create_board_popup" class="popup round white no-display">
+			<div class="popup-header text-center bold">
+				<span class="popup-header-title">Create Board</span>
+				<span id="popup_close" class="icon-cancel pointer" onClick="closePopups(event,true)"></span>
+			</div>
+			<div class="thin-line"></div>
+			<div class="popup-body">
+				<form class="popup-form" id="create_board_form" method="POST" action="main.html">
+					<label for="bord-name" class="popup-form-label medium bold block">Title</label>
+					<input  class="block-input block width-100 round" type="text" name="board-name" autofocus="true" placeholder="Example: Welcome Board..." autocomplete="off" required="true" maxlength="25"/>
+					<input type="hidden" name="board-privacy"/>
+					<input type="submit" class="btn btn-normal btn-green" value="Create" onClick="//closePopups(event,true)"/>
+				</form>
+			</div>
+		</aside>
+
+		<!-- Dialog box for profile options -->
+		<aside id="profile_popup" class="popup round white no-display">
+			<div class="popup-header text-center bold">
+				<span class="popup-header-title title">Shidil Eringa (shidil)</span>
+				<span id="popup_close" class="icon-cancel pointer" onClick="closePopups(event,true)"></span>
+			</div>
+			<div class="thin-line"></div>
+			<div class="popup-body action-menu">
+				<a href="#" class="action-menu-item bold block">Profile</a>
+				<a href="#" class="action-menu-item bold block">Cards</a>
+				<a href="#" class="action-menu-item bold block">Settings</a>
+				<div class="thin-line" class="action-menu-item bold block"></div>
+				<a href="#" class="action-menu-item bold block">Help</a>
+				<a href="#" class="action-menu-item bold block">Apps</a>
+				<a href="#" class="action-menu-item bold block">Shortcuts</a>
+				<a href="#" class="action-menu-item bold block">Share Drello (For free Drello gold)</a>
+				<div class="thin-line" class="action-menu-item bold block"></div>
+				<a href="#" class="action-menu-item bold block">Getting started guide</a>
+				<a href="#" class="action-menu-item bold block">Drello Blog</a>
+				<div class="thin-line" class="action-menu-item bold block"></div>
+				<a href="#" class="action-menu-item bold block">Change language</a>
+				<a href="#" class="action-menu-item bold block">Logout</a>
+			</div>
+		</aside>
+
+		<!-- Dialog box for list actions -->
+		<aside id="list_actions_popup" class="popup round white no-display">
+			<div class="popup-header text-center bold">
+				<span class="popup-header-title title">List Actions</span>
+				<span class="icon-cancel pointer" id="popup_close" onclick="closePopups(event, true)"></span>
+			</div>
+			<div class="thin-line"></div>
+			<div class="popup-body action-menu">
+				<a href="#" class="action-menu-item bold block" id="list_action_addcard">Add Card</a>
+				<a href="#" class="action-menu-item bold block" id="list_action_archive_allcards">Archive all cards in this list</a>
+				<a href="#" class="action-menu-item bold block" id="list_action_archive">Archive list</a>
+			</div>
+		</aside>
+
+		<!-- Sidebar for boards list and search actions -->
+		<aside id="boards_popup" class="popup round white no-display">
+			<div class="popup-body">
+				<form class="popup-form">
+					<input id="search_boards_input" class="block-input block width-100 round" type="text" name="board-name" placeholder="Find boards by name..." autofocus="true" autocomplete="off"/>
+				</form>
+				<div id="boards_popup_results" class="popup-box">
+					<div class="popup-box-title">
+						<span class="icon-clock">Search Results</span>
+						<span class="icon-plus"></span>
+					</div>
+					<div id="boards_popup_results_list" class="boards-list block">
+
+					</div>
+				</div>
+				<div id="boards_popup_starred" class="popup-box no-display">
+					<div class="popup-box-title">
+						<span class="icon-star">Starred Boards</span>
+						<span class="icon-plus"></span>
+					</div>
+					<div class="boards-list block">
+
+					</div>
+				</div>
+				<div id="boards_popup_my" class="popup-box no-display">
+					<div class="popup-box-title">
+						<span class="icon-user">My Boards</span>
+						<span class="icon-plus"></span>
+					</div>
+					<div class="boards-list block">
+
+					</div>
+				</div>
+				<div id="boards_popup_options" class="popup-box">
+					<a class="board-popup-option block underline" href="#" onClick="showCreateBoardPopup(event)">Create new board </a>
+					<!--<a class="board-popup-option block underline" href="#" onClick="boardsPopupDockToggle()">Always keep this menu open </a>-->
+					<a class="board-popup-option block underline" href="#" onClick="showClosedBoardsPopup(event)">Show closed boards</a>
+				</div>
+			</div>
+		</aside>
+
+		<!-- Dialog box for creating anything new -->
+		<aside id="create_new_popup" class="popup white round no-display">
+			<div class="popup-header text-center bold">
+				<span class="popup-header-title title">Create</span>
+				<span id="popup_close" class="icon-cancel pointer" onClick="closePopups(event,true)"></span>
+			</div>
+			<div class="thin-line"></div>
+			<div class="popup-body">
+				<a href="#" id="new_board" class="create-option block normal-text" onclick="showCreateBoardPopup()">
+					<div class="block break-1">Create Board...</div>
+					<div class="block small">
+						A board is a collection of cards ordered in a list of lists. Use it to manage a project, track a collection, or organize anything.
+					</div>
+				</a>
+				<a href="#" id="new_personal_org" class="create-option block normal-text">
+					<div class="block break-1">Create Personal Organization...</div>
+					<div class="block small">
+						An organization is a group of boards and people. Use it to group boards in your company, team, or family.
+					</div>
+				</a>
+				<a href="#" id="new_buisiness_org" class="create-option block normal-text">
+					<div class="block break-1">Create Buisiness Organization...</div>
+					<div class="block small">
+						With Business Class, your team has more security, administrative controls and superpowers.
+					</div>
+				</a>
+			</div>
+		</aside>
+
+		<div id="overlay" class="">
+			<!-- overlayed popup for displaying full information of cards -->
+			<aside id="card_display_popup" class="popup round block no-display">
+				<div class="popup-header text-center">
+					<div class="card-cover pointer">
+						<a href="images/taco.png"><img src="images/taco.png" /></a>
+					</div>
+					<span id="popup_close" class="icon-cancel pointer" onClick="closePopups(event,true)"></span>
+				</div>
+				<div class="popup-body wrapper">
+					<div id="card_info" class="card-info left width-80 padding-10 block">
+						<div class="card-info-title">
+							<span class="card-info-title-icon i-block middle large icon-credit-card large light-text"></span>
+							<span class="card-info-title-name i-block middle medium bold">Card Name</span>
+							<span class="card-info-title-extra i-block middle small">In list <a href="#" class="card-info-title-extra-list normal underline">List Name</a></span>						
+						</div>
+						<div class="card-info-detail">
+							<div class="card-info-detail-description clear break-1">
+								<div class="label">Description</div>
+								<div class="card-description">
+									<p>
+										Click Edit if you'd like to add or edit a card's description. You can also change the card's title (just click it!).
+
+										Use the buttons on the right to add pictures, labels, checklists and more.
+
+										The attached picture is Taco, the most famous Siberian Husky in New York City, and official spokes-mascot for Trello. You might see him around Trello introducing new features and whatnot.
+
+									</p>
+									<a href="#" class=""><div class="card-description-edit round width-100 padding-5 icon-pencil-alt">Edit the description...</div></a>
+									<form id="edit_card_desc_form" class="block no-display width-100">
+										<textarea name ="card-desc" id="edit_card_desc_form_input" class="white round block width-100 block-input" placeholder="Add a comment..." style="resize: none; background: white"></textarea>
+										<input type="submit" class="no-margin i-block btn btn-normal btn-green" value="Save"/>
+										<span class="icon-cancel i-block middle pointer" id="edit_card_desc_form_close"></span>
+									</form>
+								</div>
+							</div>
+						</div>
+						<div class="card-info-title">
+							<span class="card-info-title-icon i-block middle large icon-attach large light-text"></span>
+							<span class="card-info-title-name i-block middle medium bold">Attachments</span>				
+						</div>
+						<div class="card-info-detail">
+							<div class="card-attachments light-text" >Add an attachment and it will be here.</div>
+							<div class="break-1"></div>
+							<a href="#" class="">
+								<div class="wrapper light-text card-add-attach round padding-5 icon-plus icon-pencil-alt">
+									Add an attachment...
+									<input id="card_add_attach_input" type="file" class="absolute-center transparent width-100" accept="image/x-png, image/gif, image/jpeg" multiple/>
+								</div>
+							</a>
+						</div>
+					</div>
+					<div id="card_actions" class="card-actions right width-20">
+						<h3>Add</h3>
+						<ul>
+							<li>
+								<a href="#" class="btn btn-normal btn-gray wrapper">
+									<span class="icon icon-attach"></span>
+									<span class="name">Attachment</span>
+									<input id="card_add_attach_input" type="file" class="absolute-center transparent width-100" accept="image/x-png, image/gif, image/jpeg" onchange="uploadAttachmentToCurrentCard(event)" multiple/>
+								</a>
+							</li>
+						</ul>
+						<h1>Actions</h1>
+						<ul>
+							<li>
+								<a href="#" class="btn btn-normal btn-gray">
+									<span class="icon icon-right-open"></span>
+									<span class="name">Move</span>
+								</a>
+							</li>
+							<li>
+								<a href="#" class="btn btn-normal btn-gray">
+									<span class="icon icon-credit-card"></span>
+									<span class="name">Copy</span>
+								</a>
+							</li>
+							<li>
+								<a href="#" class="btn btn-normal btn-gray">
+									<span class="icon icon-user"></span>
+									<span class="name">Subscribe</span>
+								</a>
+							</li>
+							<li>
+								<a href="#" class="btn btn-normal btn-gray" id="card_archive_button">
+									<span class="icon icon-user"></span>
+									<span class="name">Archive</span>
+								</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</aside>
+
+			<!-- overlayed popup for displaying closed boards -->
+			<aside id="closed_boards_popup" class="popup round block absolute-center no-display">
+				<div class="popup-container">
+					<div class="popup-header">
+						<span class="icon-archive medium"></span>
+						<span class="title medium">Closed boards</span>
+					</div>
+					<div class="thin-line"></div>
+					<div class="popup-body wrapper">
+						<div class="closed-boards-list">
+
+						</div>
+					</div>
+				</div>
+			</aside>
+
+			<!-- Card edit popup -->
+			<aside id="card_edit_popup" class="popup block no-display">
+				<div class="popup-body wrapper">
+					<div class="width-100 i-block">
+						<form id="card_edit_form" method="POST" onsubmit="">
+							<textarea class="white round block width-100 block-input" style="resize: none; background: white">
+
+							</textarea>
+							<input type="submit" class="btn btn-normal btn-green" value="Save" />
+						</form>
+					</div>
+				</div>
+			</aside>
+			
+		</div>
+		<!-- End of popups -->
+
+		<script src="js/site.js" ></script>
+	</body>
+</divdiv
